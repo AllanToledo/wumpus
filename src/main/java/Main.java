@@ -26,15 +26,6 @@ public class Main {
         }
     }
 
-    public enum Acao {
-        ROTACAO_DIREITA,
-        ROTACAO_ESQUERDA,
-        MOVER,
-        AGARRAR,
-        ATIRAR,
-        ESCALAR
-    }
-
     public static class Posicao {
         int x, y, direcao;
         int[][] direcoes = new int[][]{{0, 1}, {-1, 0}, {0, -1}, {1, 0}};
@@ -136,9 +127,7 @@ public class Main {
                     AgenteComOuro = mapa[y][x].matches(".*o.*");
                     if(AgenteComOuro) mapa[y][x] = mapa[y][x].replaceAll("o", "");
                 }
-                case ATIRAR -> {
-                    grito = disparar(robo.copie());
-                }
+                case ATIRAR -> grito = disparar(robo.copie());
                 case ROTACAO_DIREITA -> robo.virarParaDireita();
                 case ROTACAO_ESQUERDA -> robo.virarParaEsquerda();
             }

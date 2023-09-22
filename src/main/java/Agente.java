@@ -60,7 +60,7 @@ public class Agente {
     boolean estaComOOuro = false;
     boolean flechasDisponivel = true;
 
-    Queue<Main.Acao> proximaAcao = new LinkedList<>();
+    Queue<Acao> proximaAcao = new LinkedList<>();
 
     public Agente() {
         for (int i = 0; i < 4; i++) {
@@ -92,7 +92,7 @@ public class Agente {
     public void sentir(boolean fedor, boolean brisa, boolean brilho, boolean impacto, boolean grito) {
         if(!proximaAcao.isEmpty()) return;
         if(brilho && !estaComOOuro) {
-            proximaAcao.add(Main.Acao.AGARRAR);
+            proximaAcao.add(Acao.AGARRAR);
             estaComOOuro = true;
             return;
         }
@@ -124,7 +124,7 @@ public class Agente {
 
         if (estaComOOuro) {
             if(posicaoAtual.estaNoInicio()) {
-                proximaAcao.add(Main.Acao.ESCALAR);
+                proximaAcao.add(Acao.ESCALAR);
                 return;
             }
 
@@ -134,7 +134,7 @@ public class Agente {
         }
 
         if (flechasDisponivel && wumpusDeveEstarAli()) {
-            proximaAcao.add(Main.Acao.ATIRAR);
+            proximaAcao.add(Acao.ATIRAR);
         }
 
 
@@ -145,16 +145,16 @@ public class Agente {
                 posicaoAtual = backup;
                 if(i <= 2){
                     for(int j = 0; j < i; j++){
-                        proximaAcao.add(Main.Acao.ROTACAO_DIREITA);
+                        proximaAcao.add(Acao.ROTACAO_DIREITA);
                         posicaoAtual.virarParaDireita();
                     }
                 } else {
                     for(int j = 0; j < 1; j++){
-                        proximaAcao.add(Main.Acao.ROTACAO_ESQUERDA);
+                        proximaAcao.add(Acao.ROTACAO_ESQUERDA);
                         posicaoAtual.virarParaEsquerda();
                     }
                 }
-                proximaAcao.add(Main.Acao.ATIRAR);
+                proximaAcao.add(Acao.ATIRAR);
                 return;
             }
             if (!proximoFoiVisitado() && !proximoMovimentoEhMortal()) break;
@@ -165,7 +165,7 @@ public class Agente {
 
         if (i == 4) {
             if (percurso.isEmpty()) {
-                proximaAcao.add(Main.Acao.ESCALAR);
+                proximaAcao.add(Acao.ESCALAR);
                 return;
             }
 
@@ -176,16 +176,16 @@ public class Agente {
 
         if(i <= 2){
             for(int j = 0; j < i; j++){
-                proximaAcao.add(Main.Acao.ROTACAO_DIREITA);
+                proximaAcao.add(Acao.ROTACAO_DIREITA);
                 posicaoAtual.virarParaDireita();
             }
         } else {
             for(int j = 0; j < 1; j++){
-                proximaAcao.add(Main.Acao.ROTACAO_ESQUERDA);
+                proximaAcao.add(Acao.ROTACAO_ESQUERDA);
                 posicaoAtual.virarParaEsquerda();
             }
         }
-        proximaAcao.add(Main.Acao.MOVER);
+        proximaAcao.add(Acao.MOVER);
         moverParaFrente();
 
     }
@@ -204,17 +204,17 @@ public class Agente {
 
         if(contarRotacoes <= 2){
             for(int j = 0; j < contarRotacoes; j++){
-                proximaAcao.add(Main.Acao.ROTACAO_DIREITA);
+                proximaAcao.add(Acao.ROTACAO_DIREITA);
                 posicaoAtual.virarParaDireita();
             }
         } else {
             for(int j = 0; j < (4 - contarRotacoes); j++){
-                proximaAcao.add(Main.Acao.ROTACAO_ESQUERDA);
+                proximaAcao.add(Acao.ROTACAO_ESQUERDA);
                 posicaoAtual.virarParaEsquerda();
             }
         }
         posicaoAtual.mover();
-        proximaAcao.add(Main.Acao.MOVER);
+        proximaAcao.add(Acao.MOVER);
     }
 
     public boolean proximoMovimentoEhMortal() {
@@ -236,7 +236,7 @@ public class Agente {
         return wumpusPossiveis == 1;
     }
 
-    public Main.Acao executarAcao() {
+    public Acao executarAcao() {
        return proximaAcao.poll();
     }
 
