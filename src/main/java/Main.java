@@ -86,6 +86,8 @@ public class Main {
     public static void main(String[] args) throws InterruptedException {
         inicializarMapa();
         Agente agente = new Agente();
+        //O agente toma decisões ao sentir algo ou não, por isso precisa passar tudo falso
+        //Para ele tomar a primeira decisão
         agente.sentir(false, false, false, false, false);
         int pontuacaoAgente = 0;
 
@@ -95,16 +97,14 @@ public class Main {
         mainLoop:
         while(pontuacaoAgente > -10000) {
             Thread.sleep(1000);
+            //Obtem a ação do agente e simula o robo executando
             Acao acao = agente.executarAcao();
             pontuacaoAgente--;
             System.out.printf("Acao: %s Pontução %d\n", acao.toString(), pontuacaoAgente);
             int x = robo.x;
             int y = robo.y;
-            if(mapa[y][x].matches(".*[wp].*")) {
-                pontuacaoAgente -= 10000;
-                System.out.println("Agente morto");
-                break;
-            }
+
+            //declara os sentidos como inicialmente falsos
             boolean fedor = false;
             boolean brisa = false;
             boolean brilho = false;
@@ -131,9 +131,17 @@ public class Main {
                 case ROTACAO_DIREITA -> robo.virarParaDireita();
                 case ROTACAO_ESQUERDA -> robo.virarParaEsquerda();
             }
-            fedor = mapa[robo.y][robo.x].matches(".*f.*");
-            brisa = mapa[robo.y][robo.x].matches(".*b.*");
+            //Verifica se o robo caiu num poço ou foi morto pelo wumpus, após executar a ação do agente
+            if(mapa[y][x].matches(".*[wp].*")) {
+                pontuacaoAgente -= 10000;
+                System.out.println("Agente morto");
+                break;
+            }
+            //atualiza os sentidos
+            fedor  = mapa[robo.y][robo.x].matches(".*f.*");
+            brisa  = mapa[robo.y][robo.x].matches(".*b.*");
             brilho = mapa[robo.y][robo.x].matches(".*o.*");
+            //Passa os sentidos para o agente tomar a próxima decisão
             agente.sentir(fedor, brisa, brilho, impacto, grito);
             printMapa();
         }
@@ -143,6 +151,7 @@ public class Main {
     }
 
     public static boolean disparar(Posicao tiro) {
+        //Neste caso o meu tiro só se move uma posição, mas nas regras ele anda uma fila inteira
         tiro.mover();
         if(mapa[tiro.y][tiro.x].matches(".*w.*")){
             System.out.println("Wumpus morto");
